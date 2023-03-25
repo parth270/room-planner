@@ -3,7 +3,6 @@ import * as THREE from "three";
 
 function App() {
   React.useEffect(() => {
-    
     const canvas = document.getElementById("canvas");
     const rect = document.getElementById("container").getBoundingClientRect();
     const scene = new THREE.Scene();
@@ -29,15 +28,15 @@ function App() {
 
   return (
     <div className="w-[100%] h-[100vh] overflow-hidden">
-      <div className="w-[100%] h-[8vh] py-[10px] px-[30px] shadow-2xl shadow-black-500/50 bg-[#0d2329]">
+      <div className="w-[100%] h-[10vh] py-[14px] px-[30px] shadow-2xl shadow-black-500/50 bg-[#0d2329]">
         {/* <h1 className="text-black font-mono m-0 tracking-widest text-[24px] " >SKYDEVS</h1> */}
         <img src="/asset-2.png" className="w-[40px]" alt="" />
       </div>
-      <div className="flex w-[100%] h-[92vh] relative">
+      <div className="flex w-[100%] h-[90vh] relative">
         <div className="w-[30%] style-2 px-[20px]  h-[100%] bg-[#122328] overflow-y-auto">
-          <h1 className="mb-[20px]  text-white text-[40px] font-mono tracking-wider text-center mt-[40px] border-b-[1px] border-[#fad620] pb-[10px] ">
+          <p className="mb-[20px]  text-white text-[40px] font-mono tracking-wider text-center mt-[10px] border-b-[1px] border-[#fad620] pb-[10px] ">
             SkyDevs
-          </h1>
+          </p>
           <div className="w-[100%]  min-h-[200px] my-[30px] drop-shadow-xl cursor-pointer">
             <img
               src="https://images.free3d.com/imgd/l92748-cinema4d-table-66762.jpg"
