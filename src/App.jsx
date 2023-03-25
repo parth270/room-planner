@@ -1,25 +1,104 @@
 import React from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 function App() {
   React.useEffect(() => {
+    // selecting canvas and it's container
     const canvas = document.getElementById("canvas");
     const rect = document.getElementById("container").getBoundingClientRect();
+
+    //creating a scene
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color("#cfcfcf");
+
+    // creating camera
     const camera = new THREE.PerspectiveCamera(
       75,
       rect.width / rect.height,
       0.1,
       1000
     );
+    camera.position.x = 2.5;
+    camera.position.y = 2.5;
+    camera.position.z = 5;
+
+    //making the floor
+    const image1 = new Image();
+    const floorTexture = new THREE.Texture(image1);
+    image1.addEventListener("load", () => {
+      floorTexture.needsUpdate = true;
+    });
+    image1.src = "/asset-1.webp";
+    const floorG = new THREE.PlaneGeometry(5, 5);
+    const floorM = new THREE.MeshBasicMaterial({
+      side: THREE.DoubleSide,
+      map: floorTexture,
+    });
+    const floor = new THREE.Mesh(floorG, floorM);
+    floor.rotation.x = THREE.MathUtils.DEG2RAD * 90;
+    floor.position.y = -1.25;
+    scene.add(floor);
+
+    // adding the walls
+    const image2 = new Image();
+    const wallTexture = new THREE.Texture(image2);
+    image2.addEventListener("load", () => {
+      wallTexture.needsUpdate = true;
+      renderer.render(scene, camera);
+    });
+    image2.src = "/asset-2.jpg";
+    const wG = new THREE.PlaneGeometry(5, 2.5);
+    const wM = new THREE.MeshBasicMaterial({
+      side: THREE.FrontSide,
+      map: wallTexture,
+    });
+    const w1 = new THREE.Mesh(wG, wM);
+    const w2 = new THREE.Mesh(wG, wM);
+    const w3 = new THREE.Mesh(wG, wM);
+    const w4 = new THREE.Mesh(wG, wM);
+
+    w1.position.set(0, 0, 2.5);
+    w2.position.set(0, 0, -2.5);
+    w3.position.set(-2.5, 0, 0);
+    w4.position.set(2.5, 0, 0);
+
+    w1.rotation.y = Math.PI;
+    w3.rotation.y = Math.PI / 2;
+    w4.rotation.y = -Math.PI / 2;
+    scene.add(w1);
+    scene.add(w2);
+    scene.add(w3);
+    scene.add(w4);
+
+    //renderer
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
+      antialias: true,
     });
-    renderer.setSize(rect.width, rect.height);
-    renderer.render(scene, camera);
+
+    // orbit controls
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.x = 0;
+    controls.maxPolarAngle = Math.PI / 2;
+    // controls.maxPolarAngle = Math.PI / 3;
+    controls.addEventListener("change", () => {
+      renderer.render(scene, camera);
+    });
+    controls.update();
+
+    // resize
     const resize = () => {
       renderer.setSize(rect.width, rect.height);
     };
+    renderer.setSize(rect.width, rect.height);
+    renderer.render(scene, camera);
+
+    const animate = () => {
+      controls.update();
+      requestAnimationFrame(animate);
+    };
+    animate();
     window.addEventListener("resize", resize);
     return () => {
       window.removeEventListener("resize", resize);
@@ -74,8 +153,8 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="w-[70%] h-[92vh]" id="container">
-          <canvas id="canvas"></canvas>
+        <div className="w-[70%] h-[92vh] z-10" id="container">
+          <canvas id="canvas" className="z-11"></canvas>
         </div>
       </div>
     </div>
